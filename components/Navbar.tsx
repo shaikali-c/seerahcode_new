@@ -99,6 +99,13 @@ export function Navbar() {
             Sign in
           </Link>
           <a
+            href="#courses"
+            onClick={() => setOpen(false)}
+            className="block rounded-xl px-3 py-3 text-[15px] font-medium text-zinc-800 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900"
+          >
+            Browse courses
+          </a>
+          <a
             href="#enroll"
             onClick={() => setOpen(false)}
             className="mt-2 block rounded-full bg-zinc-950 px-5 py-3 text-center text-sm font-semibold text-white dark:bg-emerald-500 dark:text-zinc-950"

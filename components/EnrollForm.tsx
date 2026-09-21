@@ -206,7 +206,7 @@ export function EnrollForm() {
       <div className="space-y-6">
         {/* Step 1 */}
         {!course && (
-        <section className="rounded-[20px] border border-zinc-200 bg-white p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
+        <section className="rounded-[20px] border border-zinc-200 bg-white p-4 min-[400px]:p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
           <h2 className="flex items-baseline gap-3 text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             <span className="font-mono text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               01
@@ -234,11 +234,11 @@ export function EnrollForm() {
                     }`}
                   >
                     <span className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                      <span className="min-w-0 truncate text-sm font-semibold text-zinc-950 dark:text-zinc-50">
                         {c.label}
                       </span>
                       <span
-                        className={`rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold ${
+                        className={`shrink-0 whitespace-nowrap rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold ${
                           c.hot
                             ? "bg-zinc-950 text-white dark:bg-emerald-500 dark:text-zinc-950"
                             : "bg-zinc-100 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
@@ -291,7 +291,7 @@ export function EnrollForm() {
         )}
 
         {/* Step 2 */}
-        <section className="rounded-[20px] border border-zinc-200 bg-white p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
+        <section className="rounded-[20px] border border-zinc-200 bg-white p-4 min-[400px]:p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
           <h2 className="flex items-baseline gap-3 text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             <span className="font-mono text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               {course ? "01" : "02"}
@@ -357,7 +357,7 @@ export function EnrollForm() {
         </section>
 
         {/* Step 3 */}
-        <section className="rounded-[20px] border border-zinc-200 bg-white p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
+        <section className="rounded-[20px] border border-zinc-200 bg-white p-4 min-[400px]:p-6 md:p-7 dark:border-zinc-800 dark:bg-zinc-950">
           <h2 className="flex items-baseline gap-3 text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             <span className="font-mono text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               {course ? "02" : "03"}
@@ -543,8 +543,8 @@ export function EnrollForm() {
                 </p>
               )}
               <p className="mt-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-                You will get a collect request for {inr(PRICE)} on your UPI
-                app — GPay, PhonePe, or Paytm.
+                You will get a collect request for {inr(unitPrice)} on your
+                UPI app — GPay, PhonePe, or Paytm.
               </p>
             </div>
           )}

@@ -15,7 +15,7 @@ const POINTS = [
   },
   {
     title: "Understanding over certificates",
-    body: "Leave with a stronger foundation in essential Islamic knowledge and a path to continue.",
+    body: "Leave with a stronger foundation in essential Qur'anic knowledge and a path to continue.",
   },
 ];
 

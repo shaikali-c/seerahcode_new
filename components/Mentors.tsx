@@ -4,25 +4,21 @@ import { Reveal } from "./Reveal";
 
 const MENTORS = [
   {
-    seed: "seerah-teacher-bilal",
     name: "Bilal Ahmed",
     role: "Qur'an · Course instructor",
     alt: "Portrait of teacher Bilal Ahmed",
   },
   {
-    seed: "seerah-teacher-fatima",
     name: "Fatima Noor",
     role: "Themes · Course instructor",
     alt: "Portrait of teacher Fatima Noor",
   },
   {
-    seed: "seerah-teacher-hassan",
     name: "Hassan Ali",
     role: "Arabic · Course instructor",
     alt: "Portrait of teacher Hassan Ali",
   },
   {
-    seed: "seerah-teacher-zainab",
     name: "Zainab Malik",
     role: "Tajwid · Course instructor",
     alt: "Portrait of teacher Zainab Malik",
