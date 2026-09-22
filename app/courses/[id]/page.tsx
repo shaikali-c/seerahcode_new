@@ -4,8 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { COURSES, inr } from "../../../data/courses";
 import { FACULTY } from "../../../data/faculty";
+import { CourseCover } from "../../../components/CourseCover";
+import { CourseCurriculum } from "../../../components/CourseCurriculum";
 import { CourseEnrollCard } from "../../../components/CourseEnrollCard";
-import { HomeLink } from "../../../components/LoginBits";
+import { CourseReviews } from "../../../components/CourseReviews";
+import { CourseSamplePanel } from "../../../components/CourseSamplePanel";
+import { CourseAboutView } from "../../../components/CourseAboutView";
+import { MobileEnrollBar } from "../../../components/MobileEnrollBar";
+import { PaymentCtaButton } from "../../../components/PaymentCtaButton";
+import { SiteHeader } from "../../../components/SiteHeader";
+import { Footer } from "../../../components/Footer";
 
 export function generateStaticParams() {
   return COURSES.map((c) => ({ id: c.id }));
@@ -22,6 +30,13 @@ export async function generateMetadata({
   return {
     title: `${course.title} — Seerah`,
     description: `${course.blurb} Rated ${course.rating.toFixed(1)} by ${course.reviews.toLocaleString("en-IN")} learners. ${inr(course.price)}, incl. GST.`,
+    openGraph: {
+      title: `${course.title} — Seerah`,
+      description: course.blurb,
+      url: `https://seerah.school/courses/${course.id}`,
+      siteName: "Seerah",
+      type: "website",
+    },
   };
 }
 
@@ -42,6 +57,42 @@ const HOW_IT_WORKS = [
     text: "Every course ends with reflection exercises and a clear path for continued study.",
   },
 ];
+
+function CourseJsonLd({ course }: { course: (typeof COURSES)[number] }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.title,
+    description: course.blurb,
+    provider: {
+      "@type": "Organization",
+      name: "Seerah",
+      sameAs: "https://seerah.school",
+    },
+    instructor: {
+      "@type": "Person",
+      name: course.instructor,
+    },
+    offers: {
+      "@type": "Offer",
+      price: String(course.price),
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+      url: `https://seerah.school/courses/${course.id}`,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: String(course.rating),
+      reviewCount: String(course.reviews),
+    },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
 
 export default async function CoursePage({
   params,
@@ -67,38 +118,20 @@ export default async function CoursePage({
 
   return (
     <div className="min-h-[100dvh] bg-white font-sans text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
-      <header className="border-b border-zinc-200/80 bg-white/85 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/85">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span
-              aria-hidden
-              className="grid size-8 place-items-center rounded-full bg-emerald-600 text-[15px] font-bold text-white"
-            >
-              S
-            </span>
-            <span className="text-[17px] font-semibold tracking-tight">
-              Seerah
-            </span>
-          </Link>
-          <div className="flex items-center gap-1">
-            <HomeLink />
-            <Link
-              href="/login"
-              className="rounded-full px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 active:translate-y-[1px] dark:text-zinc-400 dark:hover:text-zinc-100"
-            >
-              Sign in
-            </Link>
-          </div>
-        </div>
-      </header>
+      <CourseJsonLd course={course} />
+      <CourseAboutView courseId={course.id} />
+      <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 md:py-12">
+      <main
+        id="main-content"
+        className="mx-auto max-w-6xl px-4 py-8 pb-28 sm:px-6 md:py-12 lg:pb-12"
+      >
         <nav aria-label="Breadcrumb" className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
           <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100">
             Home
           </Link>
           <span aria-hidden className="mx-2">/</span>
-          <Link href="/#courses" className="hover:text-zinc-900 dark:hover:text-zinc-100">
+          <Link href="/courses" className="hover:text-zinc-900 dark:hover:text-zinc-100">
             Courses
           </Link>
           <span aria-hidden className="mx-2">/</span>
@@ -111,14 +144,7 @@ export default async function CoursePage({
           {/* Main column */}
           <div>
             <div className="relative aspect-[16/9] overflow-hidden rounded-[20px] border border-zinc-200 dark:border-zinc-800">
-              <Image
-                src={course.image}
-                alt=""
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 700px"
-                className="object-cover"
-              />
+              <CourseCover category={course.category} className="absolute inset-0" />
               <div className="absolute left-4 top-4 flex gap-2">
                 {course.tag && (
                   <span className="rounded-full bg-zinc-950/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
@@ -167,6 +193,40 @@ export default async function CoursePage({
               ))}
             </dl>
 
+            {/* What you'll learn */}
+            <h2 className="mt-10 text-xl font-semibold tracking-tight">
+              What you&apos;ll learn
+            </h2>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {course.outcomes.map((o) => (
+                <li
+                  key={o}
+                  className="flex items-start gap-2.5 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3.5 text-sm leading-relaxed text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-emerald-600 text-[11px] font-bold text-white dark:bg-emerald-400 dark:text-zinc-950"
+                  >
+                    ✓
+                  </span>
+                  {o}
+                </li>
+              ))}
+            </ul>
+
+            {/* Free sample lesson */}
+            <CourseSamplePanel sample={course.sample} courseId={course.id} />
+
+            {/* Curriculum */}
+            <h2 className="mt-10 text-xl font-semibold tracking-tight">
+              Course content
+            </h2>
+            <CourseCurriculum
+              modules={course.curriculum}
+              totalLessons={course.lessons}
+              totalHours={course.hours}
+            />
+
             {/* How it works */}
             <h2 className="mt-10 text-xl font-semibold tracking-tight">
               How this course works
@@ -189,6 +249,9 @@ export default async function CoursePage({
                 </li>
               ))}
             </ol>
+
+            {/* Reviews */}
+            <CourseReviews reviews={course.featuredReviews} />
 
             {/* Instructor */}
             <h2 className="mt-10 text-xl font-semibold tracking-tight">
@@ -226,6 +289,21 @@ export default async function CoursePage({
                   Meet the full faculty →
                 </Link>
               </div>
+            </div>
+
+            {/* Next step: payment */}
+            <div className="mt-10 flex flex-col gap-4 rounded-[20px] border border-zinc-200 bg-zinc-50 p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6 dark:border-zinc-800 dark:bg-zinc-900/60">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+                  Like what you see?
+                </h2>
+                <p className="mt-1 max-w-[52ch] text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  You have the full picture of the course. Next comes your
+                  details, then the payment options — Card or UPI. Price is
+                  shown on the payment step; nothing is charged until then.
+                </p>
+              </div>
+              <PaymentCtaButton courseId={course.id} source="band" />
             </div>
 
             {/* More from instructor */}
@@ -266,14 +344,7 @@ export default async function CoursePage({
                     className="group block overflow-hidden rounded-[20px] border border-zinc-200 transition-all hover:-translate-y-1 dark:border-zinc-800"
                   >
                     <span className="relative block aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={c.image}
-                        alt=""
-                        fill
-                        sizes="(max-width: 640px) 100vw, 220px"
-                        loading="lazy"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                      />
+                      <CourseCover category={c.category} className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]" />
                     </span>
                     <span className="block p-4">
                       <span className="block truncate text-sm font-semibold text-zinc-950 dark:text-zinc-50">
@@ -290,17 +361,15 @@ export default async function CoursePage({
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:sticky lg:top-6">
+          <aside className="lg:sticky lg:top-24">
             <CourseEnrollCard course={course} />
           </aside>
         </div>
       </main>
 
-      <footer className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <p className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
-          © 2026 Seerah · Made for learners
-        </p>
-      </footer>
+      <MobileEnrollBar course={course} />
+
+      <Footer />
     </div>
   );
 }

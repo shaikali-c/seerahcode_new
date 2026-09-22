@@ -21,8 +21,8 @@ const POINTS = [
 
 export function AboutCourse() {
   return (
-    <section id="program" className="bg-white dark:bg-zinc-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
+    <section id="program" className="scroll-mt-20 bg-white dark:bg-zinc-950">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <div className="grid items-start gap-10 md:grid-cols-[1.05fr_1fr] md:gap-14">
           <Reveal>
             <div className="overflow-hidden rounded-[20px] border border-zinc-200 dark:border-zinc-800">
@@ -95,11 +95,11 @@ export function AboutCourse() {
                   href="#courses"
                   className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-semibold text-zinc-900 transition-all hover:bg-zinc-50 active:translate-y-[1px] dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900"
                 >
-                  Browse the catalog
+                  Browse courses
                 </a>
                 <a
                   href="#enroll"
-                  className="rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-zinc-800 active:translate-y-[1px] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
+                  className="rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:translate-y-[1px] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
                 >
                   Enroll now
                 </a>

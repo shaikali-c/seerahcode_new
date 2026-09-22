@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, PlayCircle, Star } from "@phosphor-icons/react";
+import { ArrowRight, PlayCircle } from "@phosphor-icons/react";
 import Image from "next/image";
 
 export function Hero() {
@@ -17,7 +17,7 @@ export function Hero() {
 
   return (
     <section id="top" className="bg-white dark:bg-zinc-950">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 md:grid-cols-2 md:gap-12 md:pb-20 md:pt-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 md:grid-cols-2 md:gap-12 md:pb-20 md:pt-16">
         {/* Left: copy */}
         <div className="max-w-xl">
           <motion.p
@@ -26,7 +26,7 @@ export function Hero() {
           >
             <span className="size-1.5 shrink-0 rounded-full bg-emerald-600 dark:bg-emerald-400" />
             <span className="min-w-0 truncate">
-              Spring cohort · applications open
+              Autumn cohort · applications open
             </span>
           </motion.p>
 
@@ -77,44 +77,23 @@ export function Hero() {
 
           <motion.div {...anim(0.24)} className="mt-7 flex flex-wrap gap-3">
             <a
-              href="#enroll"
+              href="#courses"
               className="group inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:translate-y-[1px] active:scale-[0.98] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
             >
-              Start learning
+              Browse courses
               <ArrowRight
                 size={16}
                 className="transition-transform group-hover:translate-x-0.5"
               />
             </a>
             <a
-              href="#courses"
+              href="#how"
               className="inline-flex items-center gap-2 rounded-full border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-900 transition-all hover:border-zinc-400 hover:bg-zinc-50 active:translate-y-[1px] active:scale-[0.98] dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900"
             >
               <PlayCircle size={18} />
-              Explore courses
+              How it works
             </a>
           </motion.div>
-
-          <motion.dl
-            {...anim(0.32)}
-            className="mt-8 grid max-w-md grid-cols-3 divide-x divide-zinc-200 border-y border-zinc-200 py-4 dark:divide-zinc-800 dark:border-zinc-800"
-          >
-            {[
-              ["10k+", "learners"],
-              ["4.9", "avg rating"],
-              ["95%", "completion rate"],
-            ].map(([v, l]) => (
-              <div key={l} className="px-4 first:pl-0">
-                <dt className="sr-only">{l}</dt>
-                <dd className="font-mono text-xl font-semibold text-zinc-950 dark:text-zinc-50">
-                  {v}
-                </dd>
-                <dd className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-                  {l}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </div>
 
         {/* Right: visual */}
@@ -146,17 +125,6 @@ export function Hero() {
               />
             </div>
             <div className="min-w-0">
-              <div
-                className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400"
-                aria-label="Rated 5 out of 5"
-              >
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={12} weight="fill" />
-                ))}
-                <span className="ml-1 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
-                  5.0
-                </span>
-              </div>
               <p className="truncate text-[13px] font-medium text-zinc-900 dark:text-zinc-100">
                 “I finally understood the context behind the verses.”
               </p>
@@ -168,7 +136,7 @@ export function Hero() {
 
           {/* cohort badge */}
           <div className="absolute right-4 top-4 rounded-full bg-zinc-950/85 px-3.5 py-2 font-mono text-[11px] font-medium text-white backdrop-blur">
-            Next cohort · May 4
+            Next cohort · Oct 12
           </div>
         </motion.div>
       </div>

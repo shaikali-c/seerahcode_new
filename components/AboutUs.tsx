@@ -6,27 +6,27 @@ import { ChatsCircle, Hammer, Target } from "@phosphor-icons/react";
 import { Reveal } from "./Reveal";
 
 const STATS = [
-  { v: "10k+", l: "learners" },
-  { v: "4.9", l: "avg rating" },
-  { v: "95%", l: "completion rate" },
+  { v: "24", l: "max cohort size" },
+  { v: "7", l: "study tracks" },
   { v: "8", l: "teachers" },
+  { v: "14", l: "day refund" },
 ];
 
 const VALUES = [
   {
     Icon: Hammer,
-    title: "Understanding over certificates",
-    body: "No disconnected clips. Structured lessons that build understanding week by week.",
+    title: "Traditional subjects, clear structure",
+    body: "Classical Qur'anic subjects organized into weekly lessons instead of scattered clips.",
   },
   {
     Icon: ChatsCircle,
-    title: "Qualified teachers",
-    body: "Learn from instructors who guide discussions, answer questions, and review your work.",
+    title: "Teachers who know your name",
+    body: "One lead teacher per cohort who answers your questions and reviews your work.",
   },
   {
     Icon: Target,
-    title: "Study and reflection",
-    body: "We measure steady understanding — lessons, readings, and reflection — not hours watched.",
+    title: "Progress you can keep",
+    body: "Weekly readings and reflection — understanding that stays, not hours watched.",
   },
 ];
 
@@ -34,14 +34,11 @@ export function AboutUs() {
   return (
     <section
       id="about"
-      className="border-y border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/40"
+      className="scroll-mt-20 border-y border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/40"
     >
-      <div className="mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 md:py-24">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <Reveal className="max-w-2xl">
-          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-400">
-            About us
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tighter text-zinc-950 md:text-4xl dark:text-zinc-50">
+          <h2 className="text-3xl font-semibold tracking-tighter text-zinc-950 md:text-4xl dark:text-zinc-50">
             A learning platform built for serious students of Islam.
           </h2>
           <p className="mt-3 max-w-[62ch] text-base leading-relaxed text-zinc-600 dark:text-zinc-400">

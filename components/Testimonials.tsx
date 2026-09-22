@@ -17,7 +17,7 @@ function Stars() {
 export function Testimonials() {
   return (
     <section className="bg-white dark:bg-zinc-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <Reveal className="max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tighter text-zinc-950 md:text-4xl dark:text-zinc-50">
             Learners, in their own words.
@@ -48,7 +48,7 @@ export function Testimonials() {
                 </span>
                 <span>
                   <span className="block text-sm font-semibold">Lena K.</span>
-                  <span className="block text-[13px] text-zinc-400">
+                  <span className="block text-[13px] text-zinc-500 dark:text-zinc-400">
                     Qur’an course learner
                   </span>
                 </span>

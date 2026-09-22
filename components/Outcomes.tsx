@@ -3,30 +3,33 @@ import { Reveal } from "./Reveal";
 const STEPS = [
   {
     n: "01",
-    title: "Choose your course",
-    body: "Explore courses based on your level and area of interest.",
+    title: "Browse the catalog",
+    body: "Filter by subject and level, then open a course that fits your goals.",
   },
   {
     n: "02",
-    title: "Start learning",
-    body: "Follow structured lessons taught by qualified instructors.",
+    title: "Review the course",
+    body: "See the curriculum, what you will learn, and who teaches it — before you pay.",
   },
   {
     n: "03",
-    title: "Study and reflect",
-    body: "Complete readings, exercises, discussions, and reflections.",
+    title: "Pay securely",
+    body: "Enter your details and pay by card or UPI. A GST invoice is included.",
   },
   {
     n: "04",
-    title: "Build lasting knowledge",
-    body: "Complete the course with a stronger foundation and a clear path for continued study.",
+    title: "Start learning",
+    body: "Get access, join the first teacher Q&A, and study a few hours a week.",
   },
 ];
 
 export function Outcomes() {
   return (
-    <section className="bg-white dark:bg-zinc-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
+    <section
+      id="how"
+      className="scroll-mt-20 border-y border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/40"
+    >
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <div className="grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-16">
           <div>
             <Reveal>
@@ -34,14 +37,14 @@ export function Outcomes() {
                 How enrollment works.
               </h2>
               <p className="mt-3 max-w-[46ch] text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-                A clear path from choosing a course to building lasting
-                knowledge. Most learners study a few hours a week.
+                Four clear steps from first browse to first lesson. You
+                always see the full course details before payment.
               </p>
               <a
-                href="#enroll"
+                href="#courses"
                 className="mt-6 inline-block rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:translate-y-[1px] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
               >
-                Enroll now
+                Browse courses
               </a>
             </Reveal>
           </div>

@@ -46,12 +46,18 @@ const AREAS = [
 
 const EXPERIENCE = ["0–2 years", "3–5 years", "6–10 years", "10+ years"];
 
+const labelClass =
+  "block text-[13px] font-medium text-zinc-700 dark:text-zinc-300";
+
 const inputClass = (invalid: boolean) =>
-  `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:ring-2 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 ${
+  `w-full rounded-xl border bg-white px-4 py-3 text-base text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:ring-2 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 ${
     invalid
       ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
       : "border-zinc-300 focus:border-emerald-600 focus:ring-emerald-600/20 dark:border-zinc-700 dark:focus:border-emerald-400"
   }`;
+
+const errorClass =
+  "mt-1.5 text-[13px] leading-snug text-red-600 dark:text-red-400";
 
 function strength(password: string): { score: number; label: string } {
   let score = 0;
@@ -191,10 +197,10 @@ export function AuthForm() {
   if (status === "success") {
     const instructor = mode === "signup" && accountType === "instructor";
     return (
-      <div className="rounded-[20px] border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-950">
-        <span className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-400/10">
+      <div className="py-2 text-center">
+        <span className="mx-auto grid size-12 place-items-center rounded-full bg-emerald-50 dark:bg-emerald-400/10">
           <CheckCircle
-            size={30}
+            size={26}
             weight="fill"
             className="text-emerald-600 dark:text-emerald-400"
           />
@@ -220,9 +226,9 @@ export function AuthForm() {
               Thanks,{" "}
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {username.trim()}
-              </span>{" "}
-              — we review instructor applications within 3 days and will
-              write to{" "}
+              </span>
+              . We review instructor applications within 3 days and will write
+              to{" "}
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                 {email.trim()}
               </span>
@@ -239,8 +245,8 @@ export function AuthForm() {
           )}
         </p>
         <Link
-          href="/#courses"
-          className="mt-6 block rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:translate-y-[1px] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
+          href="/courses"
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-emerald-700 active:translate-y-[1px] dark:bg-emerald-500 dark:text-zinc-950 dark:hover:bg-emerald-400"
         >
           Browse courses
         </Link>
@@ -273,21 +279,22 @@ export function AuthForm() {
       <div
         role="tablist"
         aria-label="Choose sign in or create account"
-        className="grid grid-cols-2 gap-1 rounded-full border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900"
+        className="flex gap-1 rounded-full border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-950"
       >
         {(["signin", "signup"] as Mode[]).map((m) => {
           const active = mode === m;
           return (
             <button
               key={m}
+              type="button"
               role="tab"
               aria-selected={active}
               onClick={() => switchMode(m)}
-              className={
+              className={`flex-1 whitespace-nowrap rounded-full px-3 py-2 text-[13px] transition-all sm:text-sm ${
                 active
-                  ? "min-w-0 whitespace-nowrap rounded-full bg-white px-2 py-2 text-[13px] font-semibold text-zinc-950 shadow-sm transition-all sm:px-4 sm:py-2.5 sm:text-sm dark:bg-zinc-950 dark:text-zinc-50"
-                  : "min-w-0 whitespace-nowrap rounded-full px-2 py-2 text-[13px] font-medium text-zinc-500 transition-all hover:text-zinc-800 active:translate-y-[1px] sm:px-4 sm:py-2.5 sm:text-sm dark:text-zinc-400 dark:hover:text-zinc-200"
-              }
+                  ? "bg-white font-semibold text-zinc-950 shadow-sm dark:bg-zinc-900 dark:text-zinc-50"
+                  : "font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              }`}
             >
               {m === "signin" ? "Sign in" : "Create account"}
             </button>
@@ -299,16 +306,13 @@ export function AuthForm() {
         {/* Account type */}
         {mode === "signup" && (
           <div>
-            <span
-              id="auth-type-label"
-              className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
+            <span id="auth-type-label" className={labelClass}>
               I am joining as
             </span>
             <div
               role="radiogroup"
               aria-labelledby="auth-type-label"
-              className="mt-2 grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 sm:gap-2.5"
+              className="mt-2 grid grid-cols-1 gap-2 min-[420px]:grid-cols-2"
             >
               {(
                 [
@@ -338,14 +342,14 @@ export function AuthForm() {
                       className="peer sr-only"
                     />
                     <span
-                      className={`flex min-w-0 items-center gap-2.5 rounded-xl border p-3 transition-all peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/40 sm:gap-3 sm:p-3.5 ${
+                      className={`flex min-w-0 items-center gap-3 rounded-xl border p-3 transition-all peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/40 ${
                         selected
                           ? "border-emerald-600 bg-emerald-50/60 dark:border-emerald-400 dark:bg-emerald-400/10"
                           : "border-zinc-300 hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
                       }`}
                     >
                       <t.Icon
-                        size={22}
+                        size={20}
                         aria-hidden
                         className={
                           selected
@@ -372,10 +376,7 @@ export function AuthForm() {
         {/* Username (signup) */}
         {mode === "signup" && (
           <div>
-            <label
-              htmlFor="auth-username"
-              className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
+            <label htmlFor="auth-username" className={labelClass}>
               Username
             </label>
             <input
@@ -393,7 +394,7 @@ export function AuthForm() {
               className={`mt-1.5 ${inputClass(Boolean(errors.username))}`}
             />
             {errors.username && (
-              <p id="auth-username-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+              <p id="auth-username-error" className={errorClass}>
                 {errors.username}
               </p>
             )}
@@ -402,10 +403,7 @@ export function AuthForm() {
 
         {/* Email */}
         <div>
-          <label
-            htmlFor="auth-email"
-            className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-          >
+          <label htmlFor="auth-email" className={labelClass}>
             Email
           </label>
           <input
@@ -423,7 +421,7 @@ export function AuthForm() {
             className={`mt-1.5 ${inputClass(Boolean(errors.email))}`}
           />
           {errors.email && (
-            <p id="auth-email-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+            <p id="auth-email-error" className={errorClass}>
               {errors.email}
             </p>
           )}
@@ -432,16 +430,13 @@ export function AuthForm() {
         {/* Student: phone */}
         {mode === "signup" && !isInstructor && (
           <div>
-            <label
-              htmlFor="auth-phone"
-              className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
+            <label htmlFor="auth-phone" className={labelClass}>
               Phone number
             </label>
             <div className="relative mt-1.5">
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-[15px] text-zinc-400"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-base text-zinc-400"
               >
                 +91
               </span>
@@ -462,21 +457,18 @@ export function AuthForm() {
               />
             </div>
             {errors.phone && (
-              <p id="auth-phone-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+              <p id="auth-phone-error" className={errorClass}>
                 {errors.phone}
               </p>
             )}
           </div>
         )}
 
-        {/* Instructor: degree, area, experience, resume */}
+        {/* Instructor fields */}
         {isInstructor && (
           <>
             <div>
-              <label
-                htmlFor="auth-degree"
-                className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-              >
+              <label htmlFor="auth-degree" className={labelClass}>
                 Highest degree
               </label>
               <input
@@ -494,7 +486,7 @@ export function AuthForm() {
                 className={`mt-1.5 ${inputClass(Boolean(errors.degree))}`}
               />
               {errors.degree && (
-                <p id="auth-degree-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+                <p id="auth-degree-error" className={errorClass}>
                   {errors.degree}
                 </p>
               )}
@@ -502,10 +494,7 @@ export function AuthForm() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label
-                  htmlFor="auth-area"
-                  className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-                >
+                <label htmlFor="auth-area" className={labelClass}>
                   Area of expertise
                 </label>
                 <select
@@ -527,16 +516,13 @@ export function AuthForm() {
                   ))}
                 </select>
                 {errors.area && (
-                  <p id="auth-area-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+                  <p id="auth-area-error" className={errorClass}>
                     {errors.area}
                   </p>
                 )}
               </div>
               <div>
-                <label
-                  htmlFor="auth-experience"
-                  className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-                >
+                <label htmlFor="auth-experience" className={labelClass}>
                   Experience
                 </label>
                 <select
@@ -547,7 +533,9 @@ export function AuthForm() {
                     clear("experience");
                   }}
                   aria-invalid={Boolean(errors.experience)}
-                  aria-describedby={errors.experience ? "auth-experience-error" : undefined}
+                  aria-describedby={
+                    errors.experience ? "auth-experience-error" : undefined
+                  }
                   className={`mt-1.5 ${inputClass(Boolean(errors.experience))}`}
                 >
                   <option value="">Select…</option>
@@ -558,7 +546,7 @@ export function AuthForm() {
                   ))}
                 </select>
                 {errors.experience && (
-                  <p id="auth-experience-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+                  <p id="auth-experience-error" className={errorClass}>
                     {errors.experience}
                   </p>
                 )}
@@ -566,10 +554,7 @@ export function AuthForm() {
             </div>
 
             <div>
-              <span
-                id="auth-resume-label"
-                className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-              >
+              <span id="auth-resume-label" className={labelClass}>
                 Resume
               </span>
               <input
@@ -586,7 +571,7 @@ export function AuthForm() {
               {resume ? (
                 <div className="mt-1.5 flex items-center gap-3 rounded-xl border border-emerald-600/40 bg-emerald-50/60 px-4 py-3 dark:border-emerald-400/40 dark:bg-emerald-400/10">
                   <FileText
-                    size={22}
+                    size={20}
                     aria-hidden
                     className="shrink-0 text-emerald-700 dark:text-emerald-300"
                   />
@@ -602,7 +587,7 @@ export function AuthForm() {
                     type="button"
                     onClick={removeResume}
                     aria-label="Remove resume"
-                    className="grid size-8 shrink-0 place-items-center rounded-full text-zinc-500 transition-colors hover:bg-emerald-600/10 hover:text-zinc-900 active:translate-y-[1px] dark:text-zinc-400 dark:hover:text-zinc-100"
+                    className="grid size-8 shrink-0 place-items-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-200 hover:text-zinc-900 active:translate-y-[1px] dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                   >
                     <X size={16} />
                   </button>
@@ -617,11 +602,11 @@ export function AuthForm() {
                   }`}
                 >
                   <FileArrowUp
-                    size={22}
+                    size={20}
                     aria-hidden
                     className="shrink-0 text-zinc-400"
                   />
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <span className="min-w-0 text-sm leading-snug text-zinc-600 dark:text-zinc-400">
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                       Upload your resume
                     </span>{" "}
@@ -630,7 +615,7 @@ export function AuthForm() {
                 </label>
               )}
               {errors.resume && (
-                <p id="auth-resume-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+                <p id="auth-resume-error" className={errorClass}>
                   {errors.resume}
                 </p>
               )}
@@ -640,18 +625,14 @@ export function AuthForm() {
 
         {/* Password */}
         <div>
-          <div className="flex items-baseline justify-between">
-            <label
-              htmlFor="auth-password"
-              className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
+          <div className="flex items-baseline justify-between gap-3">
+            <label htmlFor="auth-password" className={labelClass}>
               Password
             </label>
             {mode === "signin" && (
               <a
-                href="/login"
-                onClick={(e) => e.preventDefault()}
-                className="text-[13px] font-medium text-emerald-700 hover:underline dark:text-emerald-400"
+                href="mailto:hello@seerah.school?subject=Password%20reset"
+                className="shrink-0 text-[13px] font-medium text-emerald-700 hover:underline dark:text-emerald-400"
               >
                 Forgot password?
               </a>
@@ -667,9 +648,7 @@ export function AuthForm() {
                 setPassword(e.target.value);
                 clear("password");
               }}
-              placeholder={
-                mode === "signin" ? "Your password" : "8+ characters"
-              }
+              placeholder={mode === "signin" ? "Your password" : "8+ characters"}
               aria-invalid={Boolean(errors.password)}
               aria-describedby={errors.password ? "auth-password-error" : undefined}
               className={`pr-12 ${inputClass(Boolean(errors.password))}`}
@@ -678,14 +657,14 @@ export function AuthForm() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-pressed={showPassword}
-              aria-label={showPassword ? "Hide passwords" : "Show passwords"}
+              aria-label={showPassword ? "Hide password" : "Show password"}
               className="absolute right-3 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             >
               {showPassword ? <EyeSlash size={17} /> : <Eye size={17} />}
             </button>
           </div>
           {errors.password && (
-            <p id="auth-password-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+            <p id="auth-password-error" className={errorClass}>
               {errors.password}
             </p>
           )}
@@ -713,10 +692,7 @@ export function AuthForm() {
         {/* Confirm password (signup) */}
         {mode === "signup" && (
           <div>
-            <label
-              htmlFor="auth-confirm"
-              className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
+            <label htmlFor="auth-confirm" className={labelClass}>
               Confirm password
             </label>
             <input
@@ -734,26 +710,29 @@ export function AuthForm() {
               className={`mt-1.5 ${inputClass(Boolean(errors.confirm))}`}
             />
             {errors.confirm && (
-              <p id="auth-confirm-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+              <p id="auth-confirm-error" className={errorClass}>
                 {errors.confirm}
               </p>
             )}
           </div>
         )}
 
+        {/* Consent — single text flow inside a span (fixes mobile word-split) */}
         {mode === "signin" ? (
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400">
+          <label className="flex cursor-pointer items-start gap-3">
             <input
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              className="size-4 rounded accent-emerald-600"
+              className="mt-0.5 size-4 shrink-0 rounded accent-emerald-600"
             />
-            Keep me signed in on this device
+            <span className="text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Keep me signed in on this device
+            </span>
           </label>
         ) : (
           <div>
-            <label className="flex cursor-pointer items-start gap-2.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            <label className="flex cursor-pointer items-start gap-3">
               <input
                 type="checkbox"
                 checked={terms}
@@ -765,11 +744,26 @@ export function AuthForm() {
                 aria-describedby={errors.terms ? "auth-terms-error" : undefined}
                 className="mt-0.5 size-4 shrink-0 rounded accent-emerald-600"
               />
-              I agree to the Terms of Service and Privacy Policy, and I am
-              over 16.
+              <span className="text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                I agree to the{" "}
+                <Link
+                  href="/terms"
+                  className="font-medium text-emerald-700 underline-offset-2 hover:underline dark:text-emerald-400"
+                >
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="font-medium text-emerald-700 underline-offset-2 hover:underline dark:text-emerald-400"
+                >
+                  Privacy Policy
+                </Link>
+                , and I am over 16.
+              </span>
             </label>
             {errors.terms && (
-              <p id="auth-terms-error" className="mt-1.5 text-[13px] text-red-600 dark:text-red-400">
+              <p id="auth-terms-error" className={errorClass}>
                 {errors.terms}
               </p>
             )}

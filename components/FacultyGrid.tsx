@@ -103,7 +103,7 @@ export function FacultyGrid() {
 
                   {courses.length > 0 && (
                     <div className="mt-4">
-                      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400 dark:text-zinc-500">
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500 dark:text-zinc-400">
                         Teaches
                       </p>
                       <div className="mt-2 flex flex-wrap gap-2">

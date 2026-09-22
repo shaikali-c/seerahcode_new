@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
+  ArrowRight,
   Clock,
   MagnifyingGlass,
   Play,
@@ -9,9 +10,9 @@ import {
   Star,
   X,
 } from "@phosphor-icons/react";
-import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES, COURSES, LEVELS, inr } from "../data/courses";
+import { CourseCover } from "./CourseCover";
 import { Reveal } from "./Reveal";
 
 type Sort = "popular" | "rating" | "price-low" | "price-high";
@@ -23,7 +24,13 @@ const SORT_LABELS: Record<Sort, string> = {
   "price-high": "Price: high to low",
 };
 
-export function Catalog() {
+export function Catalog({
+  limit,
+  showViewAll = false,
+}: {
+  limit?: number;
+  showViewAll?: boolean;
+}) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [level, setLevel] = useState<(typeof LEVELS)[number]>("All");
@@ -62,17 +69,16 @@ export function Catalog() {
   const hasFilters =
     query.trim() !== "" || category !== "All" || level !== "All";
 
+  const visible = limit ? results.slice(0, limit) : results;
+
   return (
     <section
       id="courses"
-      className="border-y border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/40"
+      className="bg-white scroll-mt-20 dark:bg-zinc-950"
     >
-      <div className="mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 md:py-24">
+      <div className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 sm:px-6 md:py-24">
         <Reveal className="max-w-2xl">
-          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-400">
-            Course catalog
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tighter text-zinc-950 md:text-4xl dark:text-zinc-50">
+          <h2 className="text-3xl font-semibold tracking-tighter text-zinc-950 md:text-4xl dark:text-zinc-50">
             Qur’anic courses for focused study.
           </h2>
           <p className="mt-3 max-w-[60ch] text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -208,96 +214,128 @@ export function Catalog() {
 
         {/* Results */}
         {results.length > 0 ? (
-          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((c, i) => (
-              <Reveal key={c.id} delay={Math.min(i, 5) * 0.04}>
-                <li className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-zinc-200 bg-white transition-all hover:-translate-y-1 hover:shadow-[0_20px_44px_-20px_rgba(9,9,11,0.3)] dark:border-zinc-800 dark:bg-zinc-950 dark:hover:shadow-[0_20px_44px_-20px_rgba(0,0,0,0.8)]">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={c.image}
-                      alt=""
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      loading="lazy"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
-                    <div className="absolute left-3 top-3 flex gap-2">
-                      {c.tag && (
-                        <span className="rounded-full bg-zinc-950/90 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
-                          {c.tag}
-                        </span>
-                      )}
-                      <span className="rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-zinc-800 backdrop-blur">
-                        {c.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-zinc-500 dark:text-zinc-400">
-                      {c.level} · {c.lessons} lessons
-                    </p>
-                    <h3 className="mt-1.5 text-[17px] font-semibold leading-snug tracking-tight text-zinc-950 dark:text-zinc-50">
-                      {c.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                      {c.blurb}
-                    </p>
-                    <p className="mt-3 text-[13px] text-zinc-500 dark:text-zinc-400">
-                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                        {c.instructor}
-                      </span>{" "}
-                      · {c.role}
-                    </p>
-                    <div className="mt-3 flex items-center gap-3 text-[13px] text-zinc-500 dark:text-zinc-400">
-                      <span className="inline-flex items-center gap-1 font-semibold text-zinc-800 dark:text-zinc-200">
-                        <Star size={14} weight="fill" className="text-amber-500" />
-                        {c.rating.toFixed(1)}
-                      </span>
-                      <span>({c.reviews.toLocaleString("en-IN")})</span>
-                      <span className="inline-flex items-center gap-1">
-                        <Clock size={14} />
-                        {c.hours}h
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <Play size={13} />
-                        {(c.students / 1000).toFixed(1)}k
-                      </span>
-                    </div>
-                    <div className="mt-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                          <span className="font-mono text-lg font-semibold text-zinc-950 dark:text-zinc-50">
-                            {inr(c.price)}
+          <>
+            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((c, i) => (
+                <Reveal key={c.id} delay={Math.min(i, 5) * 0.04}>
+                  <li className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-zinc-200 bg-white transition-all hover:-translate-y-1 hover:shadow-[0_20px_44px_-20px_rgba(9,9,11,0.3)] dark:border-zinc-800 dark:bg-zinc-950 dark:hover:shadow-[0_20px_44px_-20px_rgba(0,0,0,0.8)]">
+                    <Link
+                      href={`/courses/${c.id}`}
+                      aria-label={`About ${c.title}`}
+                      className="flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                    >
+                      <span className="relative block aspect-[16/10] overflow-hidden">
+                        <CourseCover category={c.category} className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]" />
+                        <span className="absolute left-3 top-3 flex gap-2">
+                          {c.tag && (
+                            <span className="rounded-full bg-zinc-950/90 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                              {c.tag}
+                            </span>
+                          )}
+                          <span className="rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-zinc-800 backdrop-blur">
+                            {c.category}
                           </span>
-                          {c.oldPrice && (
-                            <span className="font-mono text-sm text-zinc-400 line-through">
-                              {inr(c.oldPrice)}
+                        </span>
+                      </span>
+                      <span className="flex flex-1 flex-col p-5">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-zinc-500 dark:text-zinc-400">
+                          {c.level} · {c.lessons} lessons
+                        </span>
+                        <span className="mt-1.5 text-[17px] font-semibold leading-snug tracking-tight text-zinc-950 dark:text-zinc-50">
+                          {c.title}
+                        </span>
+                        <span className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                          {c.blurb}
+                        </span>
+                        <span className="mt-3 text-[13px] text-zinc-500 dark:text-zinc-400">
+                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                            {c.instructor}
+                          </span>{" "}
+                          · {c.role}
+                        </span>
+                        <span className="mt-3 flex items-center gap-3 text-[13px] text-zinc-500 dark:text-zinc-400">
+                          <span className="inline-flex items-center gap-1 font-semibold text-zinc-800 dark:text-zinc-200">
+                            <Star
+                              size={14}
+                              weight="fill"
+                              className="text-amber-500"
+                            />
+                            {c.rating.toFixed(1)}
+                          </span>
+                          <span>({c.reviews.toLocaleString("en-IN")})</span>
+                          <span className="inline-flex items-center gap-1">
+                            <Clock size={14} />
+                            {c.hours}h
+                          </span>
+                          <span className="inline-flex items-center gap-1">
+                            <Play size={13} />
+                            {(c.students / 1000).toFixed(1)}k
+                          </span>
+                        </span>
+                        <span className="mt-4 block border-t border-zinc-100 pt-4 dark:border-zinc-800">
+                          <span className="flex items-center justify-between gap-3">
+                            <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                              <span className="font-mono text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+                                {inr(c.price)}
+                              </span>
+                              {c.oldPrice && (
+                                <span className="font-mono text-sm text-zinc-400 line-through">
+                                  {inr(c.oldPrice)}
+                                </span>
+                              )}
+                              {c.oldPrice && (
+                                <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300">
+                                  {Math.round(
+                                    (1 - c.price / c.oldPrice) * 100
+                                  )}
+                                  % off
+                                </span>
+                              )}
                             </span>
-                          )}
-                          {c.oldPrice && (
-                            <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300">
-                              {Math.round((1 - c.price / c.oldPrice) * 100)}%
-                              off
+                            <span className="shrink-0 rounded-full border border-zinc-300 px-4 py-2 text-[13px] font-semibold text-zinc-900 transition-all group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white dark:border-zinc-700 dark:text-zinc-100 dark:group-hover:border-emerald-400 dark:group-hover:bg-emerald-500 dark:group-hover:text-zinc-950">
+                              About course
                             </span>
-                          )}
-                        </p>
-                        <Link
-                          href={`/courses/${c.id}`}
-                          aria-label={`View ${c.title}`}
-                          className="shrink-0 rounded-full border border-zinc-300 px-4 py-2 text-[13px] font-semibold text-zinc-900 transition-all hover:border-emerald-600 hover:bg-emerald-600 hover:text-white active:translate-y-[1px] dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-zinc-950"
-                        >
-                          View course
-                        </Link>
-                      </div>
-                      <p className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                        Incl. GST
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </Reveal>
-            ))}
-          </ul>
+                          </span>
+                          <span className="mt-1.5 block text-xs text-zinc-500 dark:text-zinc-400">
+                            Incl. GST
+                          </span>
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+
+            {showViewAll && results.length > visible.length && (
+              <p className="mt-8 text-center">
+                <Link
+                  href="/courses"
+                  className="group inline-flex items-center gap-2 rounded-full border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-900 transition-all hover:border-emerald-600 hover:text-emerald-700 active:translate-y-[1px] dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-emerald-400 dark:hover:text-emerald-300"
+                >
+                  View all {results.length} courses
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </Link>
+              </p>
+            )}
+            {showViewAll && results.length <= visible.length && (
+              <p className="mt-8 text-center">
+                <Link
+                  href="/courses"
+                  className="group inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 underline-offset-4 hover:underline dark:text-emerald-400"
+                >
+                  Open the full course catalog
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </Link>
+              </p>
+            )}
+          </>
         ) : (
           <div className="mt-8 rounded-[20px] border border-dashed border-zinc-300 bg-white px-6 py-16 text-center dark:border-zinc-700 dark:bg-zinc-950">
             <div className="mx-auto grid size-14 place-items-center rounded-full bg-zinc-100 dark:bg-zinc-900">
